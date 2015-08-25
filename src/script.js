@@ -43,9 +43,9 @@ App.prototype = {
         });
 
         this.bd.on("drop", ".ui-font-area", function(e) {
-            var files = e.originalEvent.dataTransfer.files;
-            var fontList = self.bd.find(".ui-font-list");
-            var fontArea = $(this);
+            var files = e.originalEvent.dataTransfer.files,
+                fontList = self.bd.find(".ui-font-list"),
+                fontArea = $(this);
             //ui-font-main
             if (self.isFirst) {
                 fontArea.addClass("ui-font-area-have");
@@ -107,7 +107,19 @@ App.prototype = {
                         if (!/image\/svg/.test(files[i].type)) {
                             continue;
                         }
-                        var unicodeNum = self._getunicode();
+                        var unicodeNum = self._getunicode(),
+                            len = self.data[self.status].length;
+                        for (var j = len; j > 0; j--) {
+                            var snapNum = self.data[self.status][j - 1]['unicode'].replace(/\D/g, function(a) {
+                                return ""
+                            });
+                            snapNum = Number(snapNum);
+                            if (snapNum >= unicodeNum) {
+                                self.unicodeNum = snapNum;
+                                unicodeNum = self._getunicode();
+                                break;
+                            }
+                        }
                         self.data[self.status].push({
                             unicode: '&#x' + unicodeNum + ';',
                             glyph: fs.readFileSync(files[i].path).toString(),
@@ -194,6 +206,9 @@ App.prototype = {
             fs.writeFileSync(dir + '/demo.html', '<!DOCTYPE html><html><head><meta charset="utf-8"/><title>IconFont</title><link rel="stylesheet" href="demo.css"></head><body><h1 class="iconfont">' + this.bd.find(".ui-font-textarea").val() + '</h1></body></html>');
         } else {
             for (var i = 0; i < data.length; i++) {
+                if (data[i].unicode === "&#x78;") {
+                    continue;
+                }
                 html += '<li><i class="icon iconfont">' + data[i].unicode + '</i><div class="code">&amp;' + data[i].unicode.slice(1) + '</div></li>'
             }
             fs.writeFileSync(dir + '/demo.html', '<!DOCTYPE html><html><head><meta charset="utf-8"/><title>IconFont</title><link rel="stylesheet" href="demo.css"></head><body><div class="main"><h1>IconFont 图标</h1><ul class="icon_lists clear">' + html + '</ul><div class="helps">第一步：使用font-face声明字体<pre>\n@font-face {\n    font-family: "iconfont";\n    src: url("iconfont.eot");\n    src: url("iconfont.eot?#iefix") format("embedded-opentype"),\n    url("iconfont.woff") format("woff"),\n    url("iconfont.ttf") format("truetype"),\n    url("iconfont.svg#iconfont") format("svg");\n}</pre>\n第二步：定义使用iconfont的样式<pre>.iconfont {\n    font-family:"iconfont" !important;\n    font-size:16px;\n    font-style:normal;\n    -webkit-font-smoothing: antialiased;\n    -webkit-text-stroke-width: 0.2px;\n    -moz-osx-font-smoothing: grayscale;\n}</pre>第三步：挑选相应图标并获取字体编码，应用于页面<pre>&lt;i class="iconfont"&gt;&amp;#x33;&lt;/i&gt;</pre></div></div></body></html>');
