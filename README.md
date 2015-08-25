@@ -24,5 +24,7 @@
 
 <p><img src="https://raw.githubusercontent.com/stormtea123/panda/master/demo/4.png" alt="icon"></p>
 
+> 感谢<a href="https://github.com/purplebamboo/font-carrier">font-carrier</a>提供底层技术支持
+
 
 
