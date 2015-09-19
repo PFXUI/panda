@@ -18,7 +18,7 @@
 
 <p><img src="https://raw.githubusercontent.com/stormtea123/panda/master/demo/3.png" alt="icon"></p>
 
-3.从中文字体中过滤出需要的字形（解析8.1M的中文字体，需等待时间约6s）
+3.从中文字体中过滤出需要的字形（过滤8.1M的中文字体，需等待时间约6s）
 
 <p><img src="https://raw.githubusercontent.com/stormtea123/panda/master/demo/4.png" alt="icon"></p>
 
