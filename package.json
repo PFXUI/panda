@@ -24,7 +24,7 @@
     },
     "chromium-args": "--enable-threaded-compositing",
     "dependencies": {
-        "font-carrier": "0.0.6"
+        "font-carrier": "0.0.8"
     },
     "repositories": [{
         "type": "git",
